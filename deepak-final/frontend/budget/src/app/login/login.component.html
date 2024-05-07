@@ -1,0 +1,35 @@
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 66vh;">
+  <div class="row border rounded-5 p-3 bg-white shadow box-area">
+<p-panel>
+    <h4 class="text-center">Login</h4>
+
+    <div class="container">
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate>
+            <div class="form-group">
+                <label for="username">User name</label>
+          <input type="username" class="form-control" formControlName="username" placeholder="Enter username">
+          <small class="form-text text-muted" 
+            *ngIf="loginForm.controls.username.touched && loginForm.controls.username.errors?.required">
+              Please enter username!
+          </small>
+        </div>
+        
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" class="form-control" formControlName="password" placeholder="Password">
+          <small class="form-text text-muted" 
+          *ngIf="loginForm.controls.password.touched && loginForm.controls.password.errors?.required">
+            Please enter password!
+        </small>
+        </div>
+        <div class="row" >
+            <small>Don't have account? <a routerLink="/signUp">Sign Up</a></small>
+          
+        </div>
+        <button type="submit" class="btn btn-primary" [disabled]="!loginForm.valid">Submit</button>
+      </form>
+    </div>
+    
+</p-panel>
+</div>
+</div>

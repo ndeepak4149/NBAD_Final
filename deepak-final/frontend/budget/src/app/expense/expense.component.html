@@ -1,0 +1,89 @@
+<app-nav-bar></app-nav-bar>
+
+<div class="container-fluid mt-3">
+    <div class="row">
+        <h2 class="text-center">Expense List</h2>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <button pButton type="button" label="Add" class="p-button-success p-button-rounded" (click)="addExpense()"></button>
+            <br><br>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th>Amount</th>
+                        <th>Month</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let rowData of expenses; let i = index">
+                        <td>{{ rowData.category }}</td>
+                        <td>{{ rowData.amount }}</td>
+                        <td>{{ rowData.month }}</td>
+                        <td>
+                            <button pButton type="button" icon="pi pi-pencil" class="p-button-danger p-button-rounded" (click)="openEditDialog(rowData)"></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+    </div>
+</div>
+<p-dialog header="Add Expense" [(visible)]="showForm" [style]="{ 'width':'50%' }">
+    <form [formGroup]="newExpenseForm" (ngSubmit)="saveExpense()">
+        <div class="form-group">
+            <label for="category">Category</label>
+            <select class="form-control" id="category" formControlName="category">
+                <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="amount">Amount</label>
+            <input type="text" class="form-control" id="amount" formControlName="amount">
+        </div>
+        <div class="form-group">
+            <label for="month">Month</label>
+            <select class="form-control" id="month" formControlName="month">
+                <option *ngFor="let month of months" [value]="month">{{ month }}</option>
+            </select>
+        </div>
+        <button pButton type="submit" label="Submit" class="p-button-primary p-button-rounded"></button>
+    </form>
+</p-dialog>
+
+<p-dialog header="Edit Expenses" [(visible)]="display" [style]="{ 'width':'500px' }">
+    <ng-template pTemplate="header">
+        <span style="font-size: 19px;">Edit Expense</span>
+    </ng-template>
+   
+    <div class="p-fluid">
+        <div class="p-field">
+            <label style="font-size: 13px;">Please choose category:</label>
+            <select class="form-control" id="category" [(ngModel)]="newExpense.category">
+                <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+            </select>
+        </div>
+        <div class="p-field">
+            <label style="font-size: 13px;">Amount:</label>
+            <input pInputText placeholder="amount" [(ngModel)]="newExpense.amount" />
+        </div>
+        <div class="p-field">
+            <label style="font-size: 13px;">Month:</label>
+            <select class="form-control" id="month" [(ngModel)]="newExpense.month">
+                <option *ngFor="let month of months" [value]="month">{{ month }}</option>
+            </select>
+        </div>
+    </div>
+    
+    <ng-template pTemplate="footer">
+        <button pButton type="button" label="Update Expense" (click)="updateExpense(newExpense)" class="p-button-raised p-button-rounded p-button-success"></button>
+        <button pButton type="button" label="Delete Expense" (click)="deleteExpense(newExpense._id)" class="p-button-raised p-button-rounded p-button-danger"></button>
+    </ng-template>
+</p-dialog>

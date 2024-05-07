@@ -1,0 +1,93 @@
+<app-nav-bar></app-nav-bar>
+
+<div class="container-fluid mt-3">
+    <div class="row">
+        <h2 class="text-center">Budget List</h2>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <button pButton type="button" label="Add" class="p-button-success p-button-rounded" (click)="addBudget()"></button>
+            <br><br>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th>Budget</th>
+                        <th>Month</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let budget of budgets">
+                        <td>{{ budget.category }}</td>
+                        <td>{{ budget.amount }}</td>
+                        <td>{{ budget.month }}</td>
+                        <td>
+                            <button pButton type="button" icon="pi pi-pencil" class="p-button-danger p-button-rounded" (click)="openEditDialog(budget)"></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<p-dialog header="Add Budget" [(visible)]="add" [style]="{ 'width':'500px' }" [modal]="true" [closable]="true">
+    <form [formGroup]="newBudgetForm" (ngSubmit)="saveBudget()">
+        <div class="p-fluid">
+            <div class="p-field">
+                <label for="category">Category</label>
+                <select class="form-control" id="category" formControlName="category">
+                    <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+                </select>
+            </div>
+            <div class="p-field">
+                <label for="amount">Amount</label>
+                <input type="text" class="form-control" id="amount" formControlName="amount">
+            </div>
+            <div class="p-field">
+                <label for="month">Month</label>
+                <select class="form-control" id="month" formControlName="month">
+                    <option *ngFor="let month of months" [value]="month">{{ month }}</option>
+                </select>
+            </div>
+        </div>
+        <div class="p-dialog-footer">
+            <button pButton type="submit" label="Submit" class="p-button-primary p-button-rounded"></button>
+        </div>
+    </form>
+</p-dialog>
+
+<p-dialog header="Edit Budget" [(visible)]="displayEditDialog" [style]="{ 'width':'500px' }">
+    <ng-template pTemplate="header">
+        <span style="font-size: 19px;">Edit Budget</span>
+    </ng-template>
+   
+    <div class="p-fluid">
+        <div class="p-field">
+            <label style="font-size: 13px;">Category:</label>
+            <select class="form-control" id="category" [(ngModel)]="newBudget.category">
+                <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+            </select>
+        </div>
+        <div class="p-field">
+            <label style="font-size: 13px;">Amount:</label>
+            <input pInputText placeholder="amount" [(ngModel)]="newBudget.amount" />
+        </div>
+        <div class="p-field">
+            <label style="font-size: 13px;">Month:</label>
+            <select class="form-control" id="month" [(ngModel)]="newBudget.month">
+                <option *ngFor="let month of months" [value]="month">{{ month }}</option>
+            </select>
+        </div>
+    </div>
+    
+    <ng-template pTemplate="footer">
+        <button pButton type="button" label="Update Budget" (click)="updateBudget(newBudget)" class="p-button-raised p-button-rounded p-button-success"></button>
+        <button pButton type="button" label="Delete Budget" (click)="deleteBudget(newBudget._id)" class="p-button-raised p-button-rounded p-button-danger"></button>
+    </ng-template>
+</p-dialog>
